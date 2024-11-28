@@ -563,7 +563,7 @@ window.onload = function () {
 		
 		return;
 	}
-    const totalbackgrounds = 4; // 0-19
+    const totalbackgrounds = 9; // 0-19
     console.log('background' + ((indexForTodaysWord + 52) % totalbackgrounds).toString());
 
     var urlstring = 'url(images/background' + (indexForTodaysWord % totalbackgrounds) + '.jpg)';
