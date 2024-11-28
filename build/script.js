@@ -556,7 +556,7 @@ window.onload = function () {
 	if( owenDay>fullDaysSinceEpoch)
 	{
 		console.log("no ready yet");
-		(document.getElementById("game-number")).innerText = "Game starts on 27/12/2024";
+		(document.getElementById("game-number")).innerText = "Game starts on 28/11/2024";
 		(document.getElementById("game-stats")).innerText ="";
 		(document.getElementById("keyboard-cont")).style.display = "none";
 		(document.getElementById("Options-Row")).style.display = "none";
