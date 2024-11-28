@@ -9,11 +9,18 @@ let allGuesses = [];
 let allWordGuesses = [];
 var now = new Date();
 var fullDaysSinceEpoch = Math.floor(now / 8.64e7);
-var day0forGame = 19956;
+
+var owensbd = new Date('2024-12-27');
+//var owensbd = new Date('2024-11-28');
+var owenDay = Math.floor(owensbd / 8.64e7);
+console.log("owen day="+owenDay.toString()+" current:"+fullDaysSinceEpoch.toString());
+
+var day0forGame = owenDay;
 var daySinceGameStart = fullDaysSinceEpoch -day0forGame;
 let indexForTodaysWord = daySinceGameStart % WORDS.length;
 console.log("day=" + daySinceGameStart.toString() + " index=" + indexForTodaysWord.toString());
-rightGuessString = WORDS[indexForTodaysWord];
+if(indexForTodaysWord>=0)
+	rightGuessString = WORDS[indexForTodaysWord];
 console.log(rightGuessString);
 let succeeded = false;
 
@@ -22,7 +29,12 @@ let currentStreak = 0;
 let lastSuccessDay = 0;
 let totalWins = 0;
 let totalDaysAttempted = 0;
+
+let guessOn = [0,0,0,0,0,0,0,0];
+
 const zeroPad = (num, places) => String(num).padStart(places, '0')
+
+const varpfx = "mug_";
 
 let dates = [
     {
@@ -54,8 +66,76 @@ let dates = [
         "message": "Happy New Year!"
     },
     {
-        "specialDate": "04/05",
-        "message": "Happy Star Wars Day!"
+        "specialDate": "31/07",
+        "message": "Happy Birthday Harry!"
+    },
+    {
+        "specialDate": "30/07",
+        "message": "Happy Birthday Neville!"
+    },
+    {
+        "specialDate": "09/01",
+        "message": "Happy Birthday Severus!"
+    },
+    {
+        "specialDate": "26/01",
+        "message": "Happy Birthday Gilderoy!"
+    },
+    {
+        "specialDate": "30/01",
+        "message": "Happy Birthday Lily!"
+    },
+    {
+        "specialDate": "10/03",
+        "message": "Happy Birthday Remus!"
+    },
+    {
+        "specialDate": "01/04",
+        "message": "Happy Birthday Fred & George!"
+    },
+    {
+        "specialDate": "27/03",
+        "message": "Happy Birthday James!"
+    },
+    {
+        "specialDate": "23/06",
+        "message": "Happy Birthday Dudley! Hope you have lots of presents!"
+    },
+    {
+        "specialDate": "11/08",
+        "message": "Happy Birthday Ginny!"
+    },
+    {
+        "specialDate": "03/11",
+        "message": "Happy Birthday Sirius!"
+    },
+    {
+        "specialDate": "06/12",
+        "message": "Happy Birthday Hagrid!"
+    },
+    {
+        "specialDate": "31/12",
+        "message": "Happy Birthday Voldem....sorry Tom!"
+    },
+	{
+        "specialDate": "19/09",
+        "message": "Happy Birthday Hermione!"
+    },
+    {
+        "specialDate": "28/06",
+        "message": "Happy Birthday Dobby!"
+    },
+    {
+        "specialDate": "05/06",
+        "message": "Happy Birthday Draco!"
+    },
+    {
+        "specialDate": "13/02",
+        "message": "Happy Birthday Luna!"
+    },
+    {
+        "specialDate": "01/03",
+        "message": "Happy Birthday Ron!"
     }
 
 ];
@@ -245,9 +325,9 @@ function checkGuess(rowIndex) {
     if (guessString === rightGuessString) {
         succeeded = true;
 
-        guessesRemaining = 0;
-
         if (lastSuccessDay != indexForTodaysWord) {
+			guessOn[NUMBER_OF_GUESSES-guessesRemaining]++;
+			
             // increase streak
             totalWins++;
             totalDaysAttempted++;
@@ -256,6 +336,8 @@ function checkGuess(rowIndex) {
                 highestStreak = currentStreak;
             lastSuccessDay = indexForTodaysWord;
         }
+		
+		guessesRemaining = 0;
 
         showResult(rightGuessString);
 
@@ -339,16 +421,20 @@ function insertLetter(pressedKey) {
 }
 
 function storeSession() {
-    localStorage.setItem("val_allWordGuesses", JSON.stringify(allWordGuesses));
-    localStorage.setItem("val_indexForTodaysWord", JSON.stringify(indexForTodaysWord));
+    localStorage.setItem("mug_allWordGuesses", JSON.stringify(allWordGuesses));
+    localStorage.setItem("mug_indexForTodaysWord", JSON.stringify(indexForTodaysWord));
 
-    localStorage.setItem("val_currentStreak", JSON.stringify(currentStreak));
-    localStorage.setItem("val_lastSuccessDay", JSON.stringify(lastSuccessDay));
+    localStorage.setItem("mug_currentStreak", JSON.stringify(currentStreak));
+    localStorage.setItem("mug_lastSuccessDay", JSON.stringify(lastSuccessDay));
 	
-	localStorage.setItem("val_highestStreak", JSON.stringify(highestStreak));
+	localStorage.setItem("mug_highestStreak", JSON.stringify(highestStreak));
 	
-	localStorage.setItem("val_totalWins", JSON.stringify(totalWins));
-	localStorage.setItem("val_totalDaysAttempted", JSON.stringify(totalDaysAttempted));
+	localStorage.setItem("mug_totalWins", JSON.stringify(totalWins));
+	localStorage.setItem("mug_totalDaysAttempted", JSON.stringify(totalDaysAttempted));
+	for(let i=0;i<NUMBER_OF_GUESSES;i++)
+	{
+		localStorage.setItem("mug_guessOn_"+(i+1).toString(), JSON.stringify(guessOn[i]));
+	}
 }
 
 const animateCSS = (element, animation, prefix = "animate__") =>
@@ -466,6 +552,17 @@ document.getElementById("myForm").addEventListener("click", (e) => {
 });
 
 window.onload = function () {
+	
+	if( owenDay>fullDaysSinceEpoch)
+	{
+		console.log("no ready yet");
+		(document.getElementById("game-number")).innerText = "Game starts on 27/12/2024";
+		(document.getElementById("game-stats")).innerText ="";
+		(document.getElementById("keyboard-cont")).style.display = "none";
+		(document.getElementById("Options-Row")).style.display = "none";
+		
+		return;
+	}
     const totalbackgrounds = 4; // 0-19
     console.log('background' + ((indexForTodaysWord + 52) % totalbackgrounds).toString());
 
@@ -475,12 +572,17 @@ window.onload = function () {
     $('body').css('background-image', 'url(images/background' + (indexForTodaysWord % totalbackgrounds) + '.jpg)');
 
 
-    let tempWordGuesses = JSON.parse(localStorage.getItem("val_allWordGuesses"));
-    currentStreak = JSON.parse(localStorage.getItem("val_currentStreak",));
-    lastSuccessDay = JSON.parse(localStorage.getItem("val_lastSuccessDay"));
-    highestStreak = JSON.parse(localStorage.getItem("val_highestStreak",));
-    totalWins = JSON.parse(localStorage.getItem("val_totalWins",));
-    totalDaysAttempted = JSON.parse(localStorage.getItem("val_totalDaysAttempted",));
+    let tempWordGuesses = JSON.parse(localStorage.getItem("mug_allWordGuesses"));
+    currentStreak = JSON.parse(localStorage.getItem("mug_currentStreak",));
+    lastSuccessDay = JSON.parse(localStorage.getItem("mug_lastSuccessDay"));
+    highestStreak = JSON.parse(localStorage.getItem("mug_highestStreak",));
+    totalWins = JSON.parse(localStorage.getItem("mug_totalWins",));
+    totalDaysAttempted = JSON.parse(localStorage.getItem("mug_totalDaysAttempted",));
+
+	for(let i=0;i<NUMBER_OF_GUESSES;i++)
+	{
+		guessOn[i] = JSON.parse(localStorage.getItem("mug_guessOn_"+(i+1).toString()));
+	}
 
     if (totalDaysAttempted === null) totalDaysAttempted = 0;
     if (totalWins === null) totalWins = 0;
@@ -494,7 +596,7 @@ window.onload = function () {
         currentStreak = 0;
     }
 
-    if (tempWordGuesses === null || localStorage.getItem("val_indexForTodaysWord") != indexForTodaysWord) {
+    if (tempWordGuesses === null || localStorage.getItem("mug_indexForTodaysWord") != indexForTodaysWord) {
         console.log("resetting guess");
     }
     else {
