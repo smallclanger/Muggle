@@ -10,9 +10,9 @@ let allWordGuesses = [];
 var now = new Date();
 var fullDaysSinceEpoch = Math.floor(now / 8.64e7);
 
-var owensbd = new Date('2024-12-27');
+var stewsbd = new Date('2024-11-28');
 //var owensbd = new Date('2024-11-28');
-var owenDay = Math.floor(owensbd / 8.64e7);
+var owenDay = Math.floor(stewsbd / 8.64e7);
 console.log("owen day="+owenDay.toString()+" current:"+fullDaysSinceEpoch.toString());
 
 var day0forGame = owenDay;
