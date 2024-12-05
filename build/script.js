@@ -326,6 +326,7 @@ function checkGuess(rowIndex) {
         succeeded = true;
 
         if (lastSuccessDay != indexForTodaysWord) {
+			console.log("Guessed correct with guess#"+(NUMBER_OF_GUESSES-guessesRemaining).toString());
 			guessOn[NUMBER_OF_GUESSES-guessesRemaining]++;
 			
             // increase streak
@@ -342,6 +343,8 @@ function checkGuess(rowIndex) {
         showResult(rightGuessString);
 
         storeSession();
+		
+		updateChart();
 
         return;
     } else {
@@ -360,6 +363,58 @@ function checkGuess(rowIndex) {
 
         storeSession();
     }
+}
+
+function updateChart()
+{
+	 const ctx = document.getElementById('myChart');
+
+  new Chart(ctx, {
+    type: 'bar',
+	
+    data: {
+      labels: ['1', '2', '3', '4', '5', '6','7','8'],
+      datasets: [{
+        label: '',
+        data: guessOn,
+        borderWidth: 4,
+		
+      }]
+    },
+    options: {
+		plugins: {
+			legend: {
+				display: false
+			},
+			 datalabels: {
+                anchor: 'end', // Position of the labels (start, end, center, etc.)
+                align: 'end', // Alignment of the labels (start, end, center, etc.)
+                color: 'black', // Color of the labels
+                font: {
+                    weight: 'bold',
+                },
+                formatter: Math.round
+                
+            }
+		},
+		indexAxis:'y',
+		scaleShowValues: true,
+		 scales: {
+			 x: {
+        grid: {
+          display: false,
+        }
+			 },
+			 y: {
+        grid: {
+          display: false,
+        }
+			 }
+    }
+		
+	}	
+  });
+  
 }
 
 function showResult(correctWord) {
@@ -474,7 +529,7 @@ document.addEventListener("keyup", (e) => {
     }
 
     let found = pressedKey.match(/[a-z0-9]/gi);
-    console.log(found);
+    
     if (!found || found.length > 1) {
         return;
     } else {

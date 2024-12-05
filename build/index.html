@@ -22,10 +22,10 @@
         }
         </style>
 	<div id="titles">
-		<h1 style="color: rgb(231, 209, 9)"> Muggle - Harry Potter Game :)</h1>	
-		<h2 id="special-date", style="color: rgb(3, 185, 221)"></h2>	
-		<h2 id="game-number", style="color: rgb(117, 221, 21)"> Game: </h2>	
-        <h2 id="game-stats", style="color: rgb(174, 128, 235)"> Stats: </h2>	
+		<h2 style="color: rgb(231, 209, 9)"> Muggle - Harry Potter Game :)</h2>	
+		<h3 id="special-date", style="color: rgb(3, 185, 221)"></h3>	
+		<h3 id="game-number", style="color: rgb(117, 221, 21)"> Game: </h3>	
+        <h3 id="game-stats", style="color: rgb(174, 128, 235)"> Stats: </h3>	
     </div>
     <br>
     <div id="game-board">
@@ -77,6 +77,12 @@
 		<label class="result" id="resultLabel">result</label>
         <label class="correctWord" id="correctWord">WORD</label>
 		<br>
+		<div>
+			Guess Distribution
+			<canvas id="myChart" height="200px"></canvas>
+		</div>
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 		<br>		
 		<button class="share-btn" id="shareBtn1">Share <i class="fa fa-share-alt"></i></button>
 		<br>
