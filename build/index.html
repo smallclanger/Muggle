@@ -72,12 +72,39 @@
 	<!-- The form -->
 <div class="form-popup" id="myForm">
     <div class="closeButtonContainer"><button class="close-btn" id="closeBtn"><i class="fa fa-close"></i></button></div>
-    <h1>Muggle</h1>
+    <h1>Statistics</h1>
+	<table>
+	<tr>
+	
+	<td style="text-align: center">
+	<h3><label class="result" id="stat_played">???</label></h3>
+	<h8>Played</h8>
+	</td>
+
+	<td style="text-align: center">
+	<h3><label class="result" id="stat_wonperc">???</label></h3>
+	Win %
+	</td>
+	
+	<td style="text-align: center">
+	<h3><label class="result" id="stat_streak">???</label></h3>
+	Current Streak
+	</td>
+
+	<td style="text-align: center">
+	<h3><label class="result" id="stat_maxstreak">???</label></h3>
+	Max Streak
+	</td>
+
+	</tr>
+	</table>
+	<br>
+	<br>
 	<div class="shareButtonContainer" >
 		<label class="result" id="resultLabel">result</label>
         <label class="correctWord" id="correctWord">WORD</label>
 		<br>
-		<div>
+		<div id = "chartBox">
 			Guess Distribution
 			<canvas id="myChart" height="200px"></canvas>
 		</div>

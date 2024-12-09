@@ -31,6 +31,7 @@ let totalWins = 0;
 let totalDaysAttempted = 0;
 
 let guessOn = [0,0,0,0,0,0,0,0];
+var correctGuessIndex = -1;
 
 const zeroPad = (num, places) => String(num).padStart(places, '0')
 
@@ -327,7 +328,8 @@ function checkGuess(rowIndex) {
 
         if (lastSuccessDay != indexForTodaysWord) {
 			console.log("Guessed correct with guess#"+(NUMBER_OF_GUESSES-guessesRemaining).toString());
-			guessOn[NUMBER_OF_GUESSES-guessesRemaining]++;
+			correctGuessIndex = NUMBER_OF_GUESSES-guessesRemaining;
+			guessOn[correctGuessIndex]++;
 			
             // increase streak
             totalWins++;
@@ -348,6 +350,7 @@ function checkGuess(rowIndex) {
 
         return;
     } else {
+		hideChart();
         guessesRemaining -= 1;
         currentGuess = [];
         nextLetter = 0;
@@ -365,19 +368,35 @@ function checkGuess(rowIndex) {
     }
 }
 
+function hideChart()
+{
+	const ctx = document.getElementById('chartBox');
+	ctx.style.display = "none";
+}
+
 function updateChart()
 {
-	 const ctx = document.getElementById('myChart');
+	const ctx = document.getElementById('myChart');
+	var barColors = [];
+	
+	for(let i=0;i<NUMBER_OF_GUESSES;i++)
+	{
+		if(i===correctGuessIndex)
+			barColors.push("green");
+		else
+			barColors.push("gray");
+	}
 
-  new Chart(ctx, {
-    type: 'bar',
+	new Chart(ctx, {
+		type: 'bar',
 	
     data: {
       labels: ['1', '2', '3', '4', '5', '6','7','8'],
       datasets: [{
         label: '',
         data: guessOn,
-        borderWidth: 4,
+		backgroundColor:barColors,
+        borderWidth: 0,
 		
       }]
     },
@@ -415,13 +434,14 @@ function updateChart()
 	}	
   });
   
+  	const charBox = document.getElementById('chartBox');
+	charBox.style.display = "block";
 }
 
 function showResult(correctWord) {
     if(succeeded)
     {
-        document.getElementById("myForm").style.backgroundColor = 'rgb(112, 216, 91)'; 
-        
+        document.getElementById("myForm").style.backgroundColor = 'rgb(112, 216, 91)';         
         document.getElementById("resultLabel").innerText = "You guessed right! Current streak:"+currentStreak.toString();        
     }
     else
@@ -432,6 +452,7 @@ function showResult(correctWord) {
 
     document.getElementById("correctWord").innerText = correctWord;
     document.getElementById("myForm").style.display = "grid";
+	
 
     updateStats();
 }
@@ -443,6 +464,11 @@ function updateStats()
     if (isNaN(winperc))
         winperc = 0;
     (document.getElementById("game-stats")).innerText = "Attempts: " + totalDaysAttempted.toString() + "  Wins:" + totalWins.toString() + " (" + winperc.toString() + "%)";
+
+	document.getElementById("stat_played").innerText = totalDaysAttempted.toString();
+	document.getElementById("stat_wonperc").innerText = winperc.toString();
+	document.getElementById("stat_streak").innerText = currentStreak.toString();
+	document.getElementById("stat_maxstreak").innerText = highestStreak.toString();
 }
 
 function insertLetter(pressedKey) {
@@ -490,6 +516,8 @@ function storeSession() {
 	{
 		localStorage.setItem("mug_guessOn_"+(i+1).toString(), JSON.stringify(guessOn[i]));
 	}
+	
+	localStorage.setItem("mug_currentCorrectIndex", JSON.stringify(correctGuessIndex));
 }
 
 const animateCSS = (element, animation, prefix = "animate__") =>
@@ -634,6 +662,8 @@ window.onload = function () {
     totalWins = JSON.parse(localStorage.getItem("mug_totalWins",));
     totalDaysAttempted = JSON.parse(localStorage.getItem("mug_totalDaysAttempted",));
 
+	correctGuessIndex = JSON.parse(localStorage.getItem("mug_currentCorrectIndex",));
+	
 	for(let i=0;i<NUMBER_OF_GUESSES;i++)
 	{
 		guessOn[i] = JSON.parse(localStorage.getItem("mug_guessOn_"+(i+1).toString()));
