@@ -453,7 +453,6 @@ function showResult(correctWord) {
     document.getElementById("correctWord").innerText = correctWord;
     document.getElementById("myForm").style.display = "grid";
 	
-
     updateStats();
 }
 
@@ -464,11 +463,17 @@ function updateStats()
     if (isNaN(winperc))
         winperc = 0;
     (document.getElementById("game-stats")).innerText = "Attempts: " + totalDaysAttempted.toString() + "  Wins:" + totalWins.toString() + " (" + winperc.toString() + "%)";
-
+try{
 	document.getElementById("stat_played").innerText = totalDaysAttempted.toString();
 	document.getElementById("stat_wonperc").innerText = winperc.toString();
 	document.getElementById("stat_streak").innerText = currentStreak.toString();
 	document.getElementById("stat_maxstreak").innerText = highestStreak.toString();
+}
+catch(err)
+{
+	document.getElementById("correctWord").innerText =err.message;
+}
+
 }
 
 function insertLetter(pressedKey) {
