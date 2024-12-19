@@ -471,7 +471,7 @@ try{
 }
 catch(err)
 {
-	document.getElementById("correctWord").innerText =err.message;
+	document.getElementById("correctWord").innerText = err.message;
 }
 
 }

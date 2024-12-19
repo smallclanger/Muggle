@@ -30,13 +30,13 @@ form {
   align-items: center;
   flex-direction: column;  
   justify-content: center;   
-  
+  background-color:rgba(50,50,50,0.75);
   width:100%;
 }
 
 #titles {
 	background-color:rgba(50,50,50,0.75);
-  border: 1px solid rgb(128, 128, 128);
+	border: 1px solid rgb(128, 128, 128);
 }
 
 .close-btn {
@@ -168,4 +168,16 @@ form {
 
 .correctWord {
   font-size: 2rem; 
+}
+
+#game-number {
+	text-align:center;
+}
+
+#game-stats {
+	text-align:center;
+}
+
+#special-date {
+	text-align:center;
 }
